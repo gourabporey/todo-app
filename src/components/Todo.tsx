@@ -7,16 +7,26 @@ export type todo = {
   marked: boolean;
 };
 
-const Todo = (todo: todo) => {
-  const [marked, setMarked] = useState(todo.marked);
+export interface TodoProps {
+  todo: todo;
+  toggleTodoStatusOfId: Function;
+}
 
-  const toggleTodoStatus = () => setMarked(!marked);
+const Todo = (props: TodoProps) => {
+  const { todo, toggleTodoStatusOfId } = props;
+  const { id, title, marked: todoMarked } = todo;
+  const [marked, setMarked] = useState(todoMarked);
+
+  const toggleTodoStatus = () => {
+    setMarked(!marked);
+    toggleTodoStatusOfId(id);
+  };
 
   return (
     <div>
       <Checkbox
-        id={todo.id}
-        label={todo.title}
+        id={id}
+        label={title}
         checked={marked}
         onClick={toggleTodoStatus}
       />

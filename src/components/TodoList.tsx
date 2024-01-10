@@ -1,19 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Todo, { todo } from '../components/Todo';
 import AddTodoInput from './AddTodoInput';
-
-type queryResponse = {
-  data: { todos: Array<todo> };
-  error?: string;
-  loading: boolean;
-};
-
-function useQuery(pathIdentifier: string): queryResponse {
-  return {
-    data: { todos: [] },
-    loading: false,
-  };
-}
+import { fetchAllTodos, updateTodos } from '@/utils/storage';
 
 const createTodo = (title: string): todo => {
   return {
@@ -24,23 +12,42 @@ const createTodo = (title: string): todo => {
 };
 
 const TodoList = () => {
-  const { data, error, loading } = useQuery('/todos');
-  const [todos, setTodos] = useState(data.todos);
+  const { data } = fetchAllTodos();
+  const [todos, setTodos] = useState(data);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => setIsClient(true), []);
+
+  useEffect(() => {
+    updateTodos(todos);
+  }, [todos]);
 
   const addTodo = async (title: string) => {
     const todo: todo = createTodo(title);
     setTodos([...todos, todo]);
   };
 
+  const toggleTodoStatus = (id: string) => {
+    const todoIndex = todos.findIndex((todo) => todo.id === id);
+    if (todoIndex !== -1) {
+      todos[todoIndex].marked = !todos[todoIndex].marked;
+    }
+    updateTodos(todos);
+  };
+
   return (
     <div className='h-screen'>
       <AddTodoInput onAddTodo={addTodo} />
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
+      {isClient && (
         <div>
           {todos.map(({ title, marked, id }) => {
-            return <Todo title={title} marked={marked} id={id} key={id} />;
+            return (
+              <Todo
+                todo={{ title, marked, id }}
+                key={id}
+                toggleTodoStatusOfId={toggleTodoStatus}
+              />
+            );
           })}
         </div>
       )}
