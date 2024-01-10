@@ -23,7 +23,7 @@ const createTodo = (title: string): todo => {
   };
 };
 
-export default function TodoList() {
+const TodoList = () => {
   const { data, error, loading } = useQuery('/todos');
   const [todos, setTodos] = useState(data.todos);
 
@@ -46,4 +46,6 @@ export default function TodoList() {
       )}
     </div>
   );
-}
+};
+
+export default TodoList;

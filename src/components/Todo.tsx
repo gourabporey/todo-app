@@ -7,7 +7,7 @@ export type todo = {
   marked: boolean;
 };
 
-export default function Todo(todo: todo) {
+const Todo = (todo: todo) => {
   const [marked, setMarked] = useState(todo.marked);
 
   const toggleTodoStatus = () => setMarked(!marked);
@@ -22,4 +22,6 @@ export default function Todo(todo: todo) {
       />
     </div>
   );
-}
+};
+
+export default Todo;

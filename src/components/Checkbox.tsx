@@ -1,9 +1,9 @@
-export default function Checkbox(props: {
+const Checkbox = (props: {
   checked: boolean;
   label: string;
   onClick: Function;
   id: string;
-}) {
+}) => {
   return (
     <div
       className='checkbox-wrapper px-2 flex gap-2'
@@ -23,4 +23,6 @@ export default function Checkbox(props: {
       </div>
     </div>
   );
-}
+};
+
+export default Checkbox;

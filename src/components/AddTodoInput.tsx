@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function AddTodoInput(props: { onAddTodo: Function }) {
+const AddTodoInput = (props: { onAddTodo: Function }) => {
   const [todoContent, setTodoContent] = useState('');
   const [errorWhileAdding, setErrorWhileAdding] = useState(false);
 
@@ -35,4 +35,6 @@ export default function AddTodoInput(props: { onAddTodo: Function }) {
       </div>
     </div>
   );
-}
+};
+
+export default AddTodoInput;
