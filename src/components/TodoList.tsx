@@ -2,19 +2,12 @@ import { useEffect, useState } from 'react';
 import Todo, { todo } from '../components/Todo';
 import AddTodoInput from './AddTodoInput';
 import { fetchAllTodos, updateTodos } from '@/utils/storage';
-
-const createTodo = (title: string): todo => {
-  return {
-    title: title,
-    marked: false,
-    id: Date.now().toString(),
-  };
-};
+import createTodo from '@/actions/create-todo';
 
 const TodoList = () => {
   const { data } = fetchAllTodos();
-  const [todos, setTodos] = useState(data);
-  const [isClient, setIsClient] = useState(false);
+  const [todos, setTodos] = useState<todo[]>(data);
+  const [isClient, setIsClient] = useState<Boolean>(false);
 
   useEffect(() => setIsClient(true), []);
 
@@ -23,7 +16,7 @@ const TodoList = () => {
   }, [todos]);
 
   const addTodo = async (title: string) => {
-    const todo: todo = createTodo(title);
+    const todo: todo = await createTodo(title);
     setTodos([...todos, todo]);
   };
 
