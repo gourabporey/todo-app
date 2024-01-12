@@ -3,6 +3,7 @@ import Todo, { todo } from '../components/Todo';
 import AddTodoInput from './AddTodoInput';
 import { fetchAllTodos, updateTodos } from '@/utils/storage';
 import createTodo from '@/actions/create-todo';
+import toggleTodoStatusOfId from '@/actions/toggle-todo-status';
 
 const TodoList = () => {
   const { data } = fetchAllTodos();
@@ -20,9 +21,10 @@ const TodoList = () => {
     setTodos([...todos, todo]);
   };
 
-  const toggleTodoStatus = (id: string) => {
+  const toggleTodoStatus = async (id: string) => {
     const todoIndex = todos.findIndex((todo) => todo.id === id);
     if (todoIndex !== -1) {
+      await toggleTodoStatusOfId(id, !todos[todoIndex].marked);
       todos[todoIndex].marked = !todos[todoIndex].marked;
     }
     updateTodos(todos);
